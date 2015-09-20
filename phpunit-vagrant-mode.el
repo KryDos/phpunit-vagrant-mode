@@ -17,7 +17,7 @@
             " --color ."
             "\"")))
 
-(defvar puvm-path-to-vagrant-directory "~/vagrant"
+(defvar puvm-path-to-vagrant-directory nil
   "Path to the directory where your Vagrant file is.")
 
 (defvar puvm-path-to-test-directory-in-vagrant nil
