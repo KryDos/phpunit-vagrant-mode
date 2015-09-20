@@ -1,23 +1,37 @@
 ; phpunit-vagrant-mode -- minor mode to execute PHPUnit tests via vagrant-ssh
 
-(defun run-all-tests ()
+(defun puvm-run-all-tests ()
   "Runs all tests in the tests directory"
   (interactive)
   (compile (concat
             "cd "
-            path-to-vagrant-directory
+            puvm-path-to-vagrant-directory
             " && "
             "vagrant ssh "
             "-c "
-            "\"cd /projects/cayugasoft/persona && /home/vagrant/.composer/vendor/bin/phpunit --color tests\"")))
+            "\""
+            "cd "
+            puvm-path-to-test-directory-in-vagrant
+            " && "
+            puvm-path-to-phpunit-executable
+            " --color ."
+            "\"")))
 
-(defvar path-to-vagrant-directory "~/vagrant"
+(defvar puvm-path-to-vagrant-directory "~/vagrant"
   "Path to the directory where your Vagrant file is.")
 
+(defvar puvm-path-to-test-directory-in-vagrant nil
+  "Path to to directory which is containing all the tests.
+   The directory should be set according to Virtual Machine's filesystem")
+
+(defvar puvm-path-to-phpunit-executable nil
+  "Path to PHPUnit executable file.
+   You can find this path using 'which phpunit' command in you vagrant shell")
+
 (define-minor-mode phpunit-vagrant-mode
-  :lighter "PHPUnit "
+  :lighter "puvm "
   :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "C-x pa") 'run-all-tests)
+            (define-key map (kbd "C-x pa") 'puvm-run-all-tests)
             map))
 
 (provide 'phpunit-vagrant-mode)
