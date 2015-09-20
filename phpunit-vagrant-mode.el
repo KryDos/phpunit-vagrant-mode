@@ -20,4 +20,4 @@
             (define-key map (kbd "C-x pa") 'run-all-tests)
             map))
 
-(provide 'phpunit-vagrantmode)
+(provide 'phpunit-vagrant-mode)
