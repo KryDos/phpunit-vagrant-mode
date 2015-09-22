@@ -1,5 +1,41 @@
 ; phpunit-vagrant-mode -- minor mode to execute PHPUnit tests via vagrant-ssh
 
+
+(defun puvm-run-current-test ()
+  (interactive)
+  (puvm-run-one-test (puvm-find-method-name)))
+
+(defun puvm-run-one-test (method-name)
+  (compile (concat
+            "cd "
+            puvm-path-to-vagrant-directory
+            " && "
+            "vagrant ssh "
+            "-c "
+            "\""
+            "cd "
+            puvm-path-to-test-directory-in-vagrant
+            " && "
+            puvm-path-to-phpunit-executable
+            " --color "
+            " --filter "
+            method-name
+            " . "
+            "\"")))
+
+(defun puvm-find-method-name ()
+  "returns method name"
+  (re-search-backward "public\s+function\s+")
+  (forward-word 2)
+  (forward-char 1)
+  (setq begin-poing (point))
+  (re-search-forward "(")
+  (backward-char 1)
+  (setq end-point (point))
+  (message (buffer-substring-no-properties
+            begin-poing
+            end-point)))
+
 (defun puvm-run-all-tests ()
   "Runs all tests in the tests directory"
   (interactive)
@@ -32,6 +68,7 @@
   :lighter "puvm "
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-x pa") 'puvm-run-all-tests)
+            (define-key map (kbd "C-x pc") 'puvm-run-current-test)
             map))
 
 (provide 'phpunit-vagrant-mode)
