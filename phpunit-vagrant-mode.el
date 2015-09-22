@@ -3,7 +3,8 @@
 
 (defun puvm-run-current-test ()
   (interactive)
-  (puvm-run-one-test (puvm-find-method-name)))
+  (save-excursion
+    (puvm-run-one-test (puvm-find-method-name))))
 
 (defun puvm-run-one-test (method-name)
   (compile (concat
