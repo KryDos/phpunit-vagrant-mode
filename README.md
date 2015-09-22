@@ -25,4 +25,5 @@ Usage
 Currently you can only run all tests.
 
 `C-x pa` - the command to run all the tests.
+
 `C-x pc` - the command to run single test. 
